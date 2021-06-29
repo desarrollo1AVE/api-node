@@ -8,9 +8,9 @@ const novelty = new Novelty();
 const router = express.Router();
 
 router.post('/readFile', async (req, res) => {
-	const response = await novelty.validateNovelties(req)
-
-	res.json(response)
+	const response = await novelty.validateNovelties(req);
+	res.redirect('https://' + req.headers.host + req.url);
+	res.json(response);
 });
 
 export default router;
