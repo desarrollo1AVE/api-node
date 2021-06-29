@@ -1,6 +1,9 @@
 import Utils from '../utils/index.js';
 import xlsx from 'xlsx';
 import { execQuery } from '../../db/index.js';
+import path from 'path';
+
+
 
 class Novelty extends Utils {
 	async validateNovelties(request) {
@@ -22,7 +25,7 @@ class Novelty extends Utils {
 	}
 
 	uploadFile(request) {
-		this.loadFile(request, './uploads/novelty/', 'archivoTCC', 'xlsx');
+		this.loadFile(request,  './uploads/novelty/', 'archivoTCC', 'xlsx');
 		const book = xlsx.readFile('./uploads/novelty/archivoTCC.xlsx');
 		const sheet = book.SheetNames;
 		return xlsx.utils.sheet_to_json(book.Sheets[sheet[0]]);
