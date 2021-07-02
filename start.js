@@ -11,7 +11,8 @@ import routes from './src/routes/index.js';
 dotenv.config();
 const app = express();
 
-// app.use(express.json());
+app.use(cors());
+
 app.use(
 	express.urlencoded({
 		extended: true
@@ -26,7 +27,6 @@ app.use(
 	})
 );
 
-app.use(cors());
 app.use(morgan('dev'));
 
 const options = { 
