@@ -11,7 +11,9 @@ import routes from './src/routes/index.js';
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cors(
+	{origin: 'https://aveonline.co'}
+));
 
 app.use(
 	express.urlencoded({
