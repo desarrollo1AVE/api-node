@@ -10,14 +10,15 @@ class Novelty extends Utils {
 			const guidesAve = await this.getNoveltiesAve(numberGuiesAve);
 			const guidesComplete = await this.mergeData(guidesAve, data);
 			return {
-				file: data,
-				guidesAve,
+				status : "ok",
+				message : "Registros encontrados",
 				guidesComplete
 			};
 		} catch (error) {
 			return {
 				status: 'error',
 				message: 'error en la carga del archivo',
+				guidesComplete : [],
 				error
 			};
 		}
