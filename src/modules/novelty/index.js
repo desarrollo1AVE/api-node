@@ -1,8 +1,14 @@
 import Utils from '../utils/index.js';
 import xlsx from 'xlsx';
+import formidable from 'formidable';
 import { execQuery } from '../../db/index.js';
 
 class Novelty extends Utils {
+	constructor() {
+		super();
+		this.idStateNovelty = 16;
+		this.idTcc = 1010;
+	}
 	async validateNovelties(request) {
 		try {
 			const data = await this.uploadFile(request);
@@ -10,15 +16,15 @@ class Novelty extends Utils {
 			const guidesAve = await this.getNoveltiesAve(numberGuiesAve);
 			const guidesComplete = await this.mergeData(guidesAve, data);
 			return {
-				status : "ok",
-				message : "Registros encontrados",
+				status: 'ok',
+				message: 'Registros encontrados',
 				guidesComplete
 			};
 		} catch (error) {
 			return {
 				status: 'error',
 				message: 'error en la carga del archivo',
-				guidesComplete : [],
+				guidesComplete: [],
 				error
 			};
 		}
@@ -64,7 +70,7 @@ class Novelty extends Utils {
 								FROM tblpaqueteo_enc 
 								WHERE dsconsec IN (${numberGuiesAveString}) 
 								AND idtransportador = 1010
-								AND idestado != 16`;
+								AND idestado != ${this.idStateNovelty}`;
 
 			const response = await execQuery(query);
 
@@ -81,6 +87,53 @@ class Novelty extends Utils {
 		});
 
 		return newData.filter(Boolean);
+	}
+
+	async updateGuides(guides) {
+		if (guides.length > 0) {
+			try {
+				guides.forEach(item => {
+					const sqlPaqueteo = `UPDATE tblpaqueteo_enc 
+											SET idestado = ${this.idStateNovelty}, 
+											dsestado = 'EN NOVEDAD' 
+											WHERE dsconsec = '${item.consecutivo}' 
+											AND idtransportador = ${this.idTcc} `;
+
+				});
+
+				const sqlEstado = `INSERT INTO tblestados_guias (
+					dsguia, dsestado, dsdescripcion, dsaclaracion, dscomentario, dsfecha,
+					idnovedad, idexp, Cod_Novedad, Des_Novedad,
+					Tipo_OrigenNovedad, idtransportadora, dstransportadora, idguia, idfecha
+				) VALUES ? `;
+					
+				const params1 = guides?.map((item) => [
+					item?.consecutivo,
+					'NOVEDAD',
+					item?.comentario,
+					item?.complemento,
+					item?.comentario,
+					item?.fechaNovedad,
+					1,
+					// item?.cuenta,
+					// item?.idEmpresa,
+					// fieldOptional.codigoNovedad(item?.codigoNovedad),
+					// fieldOptional.dsdescripcion(item?.nombreNovedad),
+					// fieldOptional.tipoOrigenNovedad(),
+					// fieldOptional.idTransportadora,
+					// fieldOptional.dsTransportadora,
+					// fieldOptional.idFecha,
+				])
+
+				console.log(params1);
+				// const response = await execQuery({
+				// 	mutation: this.mutation.addNewStates(),
+				// 	params: params1,
+				// })
+			} catch (error) {}
+		}
+
+		return guides;
 	}
 }
 
