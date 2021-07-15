@@ -18,7 +18,8 @@ export function execQuery(query = '', params = []) {
 				console.log(`ErrorPool: ${errorPool}`);
 				return createPool(options);
 			} else {
-				connection.query(query, params, (error, results, _) => {
+				connection.query(query, [params], (error, results, _) => {		
+					console.log(query);
 					connection.release();
 					if (error) {
 						console.log(`ErrorQuery: ${error}`);

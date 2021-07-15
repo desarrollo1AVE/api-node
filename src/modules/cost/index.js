@@ -3,6 +3,7 @@ import xlsx from "xlsx";
 import { execQuery } from "../../db/index.js";
 
 class Cost extends Utils {
+
   async loadFile() {
     const book = xlsx.readFile("./uploads/cost/costosservientrega.xls");
     const sheet = book.SheetNames;
@@ -22,8 +23,8 @@ class Cost extends Utils {
       return {
         ciudadOrigen: item["Ciudad Origen"],
         ciudadDestino: item["Ciudad Destino"],
-        tiempoTrayecto: item["TIPO DE TRAYECTO"],
-        flete: item["FLETE X UNID DE PESO"],
+        tipoTrayecto: item["TIPO DE TRAYECTO"],
+        flete: item["FLETE X UNID DE PESO "],
         tiempoEntrega: item["TIEMPO DE ENTREGA"],
         trayecto: item["TRAYECTO "],
         codeDaneOrigin,
@@ -31,10 +32,45 @@ class Cost extends Utils {
       };
     });
 
+    const insert = await this.insertCosts(dataChangeKey);
+ 
     return {
-      dataChangeKey,
+      insert,
     };
   }
+
+  async insertCosts(costsToInsert){
+
+    const queryInsert =`INSERT INTO tblproveedores_costos12072021 
+                      (idcliente, idtransportadora, dspaisorigen, dscodciudadorigen, dsciudadorigen, dspaisdestino, dscodciudadestino, dsciudaddestino, dstipotrayecto, dsfletexunidxpeso, dstiempoentrega, dstrayectoequivalente, dsfechai, dsfechaf, idfechai, idfechaf, idactivo) 
+                      VALUES ?`;
+
+    const params = costsToInsert?.map((item) => [
+      '9999',
+      '33',
+      'Colombia',
+      item?.codeDaneOrigin == '' ? 0: item.codeDaneOrigin,
+      item?.ciudadOrigen,
+      'Colombia',
+      item?.codeDaneDestion == '' ? 0: item.codeDaneDestion,
+      item?.ciudadDestino,
+      item?.tipoTrayecto,
+      item?.flete,
+      item?.tiempoEntrega,
+      item?.tipoTrayecto,
+      '2020/10/01',
+      '2021/08/31',
+      '20201001',
+      '20210831',
+      '1',
+    ])
+
+    const responseInsert = await execQuery(queryInsert,params);
+    return responseInsert;
+
+  }
+
+
   async getCodeDaneCity() {
     const query = `SELECT DISTINCT(POBLACION) AS poblacion, dscodigodian AS codigoDane
                         FROM tblpaqueteo_ciudades_nacionales 
