@@ -20,6 +20,7 @@
   },
   "homepage": "https://gitlab.com/aveonlinedevelop/api-node#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -30,6 +31,7 @@
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.7",
-    "xlsx": "^0.17.0"
+    "xlsx": "^0.17.0",
+    "xml2js": "^0.4.23"
   }
 }

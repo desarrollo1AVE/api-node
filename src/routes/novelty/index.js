@@ -20,4 +20,10 @@ router.post('/updateGuides', async (req, res) => {
 	const response = await novelty.updateGuides(req.body.guidesComplete);
 	res.json(response)
 });
+
+router.post('/getStatusGuide', async (req, res)=>{
+	const response = await novelty.getStatusGuide(req.body.guide)
+	console.log(response);
+	res.json(response)
+})
 export default router;
