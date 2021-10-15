@@ -31,13 +31,13 @@ app.use(
 
 app.use(morgan('dev'));
 
-const options = { 
-  key: fs.readFileSync('/var/www/aveonline.co/ssl/aveonline.co-le.key'),
-  cert: fs.readFileSync('/var/www/aveonline.co/ssl/aveonline.co-le.crt')
-}
+// const options = { 
+//   key: fs.readFileSync('/var/www/aveonline.co/ssl/aveonline.co-le.key'),
+//   cert: fs.readFileSync('/var/www/aveonline.co/ssl/aveonline.co-le.crt')
+// }
 
-https.createServer(options, app).listen(5015)
+// https.createServer(options, app).listen(5015)
 
-//app.listen(process.env.PORT, () => {
-//	console.log(`localhost:${process.env.PORT}/`);
-//});
+app.listen(process.env.PORT, () => {
+	console.log(`localhost:${process.env.PORT}/`);
+});
