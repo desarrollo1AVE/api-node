@@ -6,7 +6,7 @@ import { writeFile } from "fs/promises";
 class Cost extends Utils {
   async loadFile() {
     // const book = xlsx.readFile("./uploads/cost/costosservientrega.xls");
-    const book = xlsx.readFile("./uploads/cost/ENVIA-RESTANTE.ods");
+    const book = xlsx.readFile("./uploads/cost/tcc3.xlsx");
     const sheet = book.SheetNames;
     const data = xlsx.utils.sheet_to_json(book.Sheets[sheet[0]]);
     const cities = await this.getCodeDaneCity();
@@ -75,7 +75,7 @@ class Cost extends Utils {
     }
 
     function sleep(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms))
+      return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     const fragments = chunk(dataChangeKey, 20000);
@@ -84,28 +84,25 @@ class Cost extends Utils {
       try {
         const insert = await this.insertCosts(fragment);
         response.push(insert);
-        await sleep(5000)
-
+        await sleep(5000);
       } catch (error) {
         console.log("main:", error);
       }
     }
 
-   return {response}
-
-   
+    return { response };
 
     // console.log(JSON.stringify(dataChangeKey));
   }
 
   async insertCosts(costsToInsert) {
-    const queryInsert = `INSERT INTO tblproveedores_costos01102021
+    const queryInsert = `INSERT INTO tblproveedores_costos
                       (idcliente, idtransportadora, dspaisorigen, dscodciudadorigen, dsciudadorigen, dspaisdestino, dscodciudadestino, dsciudaddestino, dstipotrayecto, dsfletexunidxpeso, dstiempoentrega, dstrayectoequivalente, dsfechai, dsfechaf, idfechai, idfechaf, idactivo) 
                       VALUES ?`;
 
     const params = costsToInsert?.map((item) => [
       "9999",
-      "29",
+      "1010",
       "Colombia",
       item?.codeDaneOrigin == "" ? 0 : item.codeDaneOrigin,
       item?.ciudadOrigen,
@@ -116,10 +113,10 @@ class Cost extends Utils {
       item?.flete,
       item?.tiempoEntrega,
       item?.tipoTrayecto,
-      "2021/10/01",
-      "2022/09/31",
-      "20211001",
-      "20220931",
+      "2023/10/01",
+      "2024/08/31",
+      "20231001",
+      "20240831",
       "1",
     ]);
 

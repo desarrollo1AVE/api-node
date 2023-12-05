@@ -38,6 +38,7 @@ app.use(morgan('dev'));
 
 // https.createServer(options, app).listen(5015)
 
-app.listen(process.env.PORT, () => {
-	console.log(`localhost:${process.env.PORT}/`);
+app.listen(process.env.PORT, (e) => {
+	console.log(e)
+	console.log(`localhost:${process.env.PORT}`);
 });
