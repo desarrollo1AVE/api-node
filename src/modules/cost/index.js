@@ -6,7 +6,7 @@ import { writeFile } from "fs/promises";
 class Cost extends Utils {
   async loadFile() {
     // const book = xlsx.readFile("./uploads/cost/costosservientrega.xls");
-    const book = xlsx.readFile("./uploads/cost/tcc3.xlsx");
+    const book = xlsx.readFile("./uploads/cost/ARCHIVO BASE SERVIENGA 2026-2.xlsx");
     const sheet = book.SheetNames;
     const data = xlsx.utils.sheet_to_json(book.Sheets[sheet[0]]);
     const cities = await this.getCodeDaneCity();
@@ -96,13 +96,13 @@ class Cost extends Utils {
   }
 
   async insertCosts(costsToInsert) {
-    const queryInsert = `INSERT INTO tblproveedores_costos
+    const queryInsert = `INSERT INTO tblproveedores_costosSERVIENTREGA2
                       (idcliente, idtransportadora, dspaisorigen, dscodciudadorigen, dsciudadorigen, dspaisdestino, dscodciudadestino, dsciudaddestino, dstipotrayecto, dsfletexunidxpeso, dstiempoentrega, dstrayectoequivalente, dsfechai, dsfechaf, idfechai, idfechaf, idactivo) 
                       VALUES ?`;
 
     const params = costsToInsert?.map((item) => [
       "9999",
-      "1010",
+      "33",
       "Colombia",
       item?.codeDaneOrigin == "" ? 0 : item.codeDaneOrigin,
       item?.ciudadOrigen,
@@ -113,10 +113,10 @@ class Cost extends Utils {
       item?.flete,
       item?.tiempoEntrega,
       item?.tipoTrayecto,
-      "2023/10/01",
-      "2024/08/31",
-      "20231001",
-      "20240831",
+      "2026/01/01",
+      "2026/12/31",
+      "20260101",
+      "20261231",
       "1",
     ]);
 
